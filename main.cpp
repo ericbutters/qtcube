@@ -46,6 +46,7 @@
 #include <QtGui/QScreen>
 
 #include <QtCore/qmath.h>
+#include <QTime>
 
 //! [1]
 class CubeWindow : public OpenGLWindow
@@ -76,6 +77,7 @@ private:
 
     QOpenGLShaderProgram *m_program;
     int m_frame;
+    QTime time;
 };
 
 CubeWindow::CubeWindow()
@@ -99,7 +101,7 @@ int main(int argc, char **argv)
 
     CubeWindow window;
     window.setFormat(format);
-    window.resize(1280, 800);
+    window.resize(800, 480);
     window.show();
 
     window.setAnimating(true);
@@ -284,6 +286,8 @@ void CubeWindow::render()
 {
 //    qDebug() << Q_FUNC_INFO << m_frame;
 
+    qDebug("FPS: %lf",m_frame/(time.elapsed()/1000.0));
+
     glClear(GL_COLOR_BUFFER_BIT);
 /* In this experiment we are adding 			*/
 /* model-view-perspective. Lets create the model matrix */
@@ -374,5 +378,11 @@ void CubeWindow::render()
     glDrawArrays(GL_TRIANGLE_STRIP, 16, 4);
     glDrawArrays(GL_TRIANGLE_STRIP, 20, 4);
     ++m_frame;
+    if(!(m_frame%100)) {
+      qDebug("mod100");
+      m_frame=0;
+      time.start();
+    }
+
 }
 //! [5]
