@@ -90,6 +90,7 @@ CubeWindow::CubeWindow()
 //! [2]
 int main(int argc, char **argv)
 {
+    int dWidth, dHeight, dFullscreen = 0;
     QGuiApplication app(argc, argv);
 
     QSurfaceFormat format;
@@ -99,10 +100,23 @@ int main(int argc, char **argv)
     format.setDepthBufferSize(0);
     format.setRenderableType(QSurfaceFormat::OpenGLES);
 
+    if(argc != 4){
+      qDebug("Invalid arguments");
+      return -1;
+    }
+    dWidth  = atoi(argv[1]);
+    dHeight = atoi(argv[2]);
+    dFullscreen = atoi(argv[3]);
+
     CubeWindow window;
     window.setFormat(format);
-    window.resize(800, 480);
-    window.show();
+    if(dFullscreen) {
+      window.showFullScreen();
+    }
+    else {
+      window.resize(dWidth, dHeight);
+      window.show();
+    }
 
     window.setAnimating(true);
 
